@@ -41,5 +41,8 @@
 /data/*
 !/data/.keep
 
+# Ignore local bujo config (each user sets their own data_path)
+/config/bujo.yml
+
 # Ignore local bundle
 /vendor/bundle

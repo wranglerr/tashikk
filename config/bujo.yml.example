@@ -1,0 +1,9 @@
+# Path where Bujo stores its Markdown files.
+# Can be absolute or relative to the Rails root.
+# Examples:
+#   data_path: data
+#   data_path: ~/Documents/bujo
+#   data_path: /home/user/notes/bujo
+
+shared:
+  data_path: data

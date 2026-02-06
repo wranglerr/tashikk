@@ -12,7 +12,13 @@ FileUtils.chdir APP_ROOT do
   # This script is idempotent, so that you can run it at any time and get an expectable outcome.
   # Add necessary setup steps to this file.
 
-  puts "== Installing dependencies =="
+  puts "== Copying config files =="
+  unless File.exist?("config/bujo.yml")
+    FileUtils.cp "config/bujo.yml.example", "config/bujo.yml"
+    puts "  Created config/bujo.yml — edit it to set your data_path"
+  end
+
+  puts "\n== Installing dependencies =="
   system("bundle check") || system!("bundle install")
 
   puts "\n== Removing old logs and tempfiles =="

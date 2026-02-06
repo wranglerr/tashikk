@@ -39,6 +39,9 @@ module Bujo
     # Don't generate system test files.
     config.generators.system_tests = nil
 
-    config.bujo_data_path = Rails.root.join("data")
+    bujo_config = config_for(:bujo)
+    path = bujo_config[:data_path] || "data"
+    path = File.expand_path(path, Rails.root)
+    config.bujo_data_path = Pathname.new(path)
   end
 end
