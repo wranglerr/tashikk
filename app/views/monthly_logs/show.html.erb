@@ -1,0 +1,39 @@
+<div class="space-y-6">
+  <div class="flex items-center justify-between">
+    <a href="<%= monthly_log_path(year: @prev_month.year, month: @prev_month.month) %>" class="text-stone-400 hover:text-stone-700 text-sm">&larr; <%= @prev_month.strftime("%b %Y") %></a>
+    <h1 class="text-xl font-bold text-stone-700"><%= @month_date.strftime("%B %Y") %></h1>
+    <% if @next_month <= Date.today %>
+      <a href="<%= monthly_log_path(year: @next_month.year, month: @next_month.month) %>" class="text-stone-400 hover:text-stone-700 text-sm"><%= @next_month.strftime("%b %Y") %> &rarr;</a>
+    <% else %>
+      <span class="text-sm text-stone-300">&nbsp;</span>
+    <% end %>
+  </div>
+
+  <div id="monthly_entries_list">
+    <% if @entries.any? %>
+      <% @entries.each do |entry| %>
+        <%= render "shared/monthly_entry", entry: entry, year: @year, month: @month %>
+      <% end %>
+    <% else %>
+      <p class="text-stone-400 text-sm italic py-4">No monthly entries yet.</p>
+    <% end %>
+  </div>
+
+  <div id="monthly_entry_form">
+    <%= render "shared/monthly_entry_form", year: @year, month: @month %>
+  </div>
+
+  <% if @daily_logs.any? %>
+    <div class="border-t border-stone-200 pt-6 mt-6">
+      <h2 class="text-sm font-bold text-stone-500 uppercase tracking-wide mb-3">Daily Logs</h2>
+      <div class="grid grid-cols-7 gap-1">
+        <% @daily_logs.each do |log| %>
+          <a href="<%= daily_log_path(date: log.date) %>"
+             class="text-center py-2 px-1 rounded text-sm hover:bg-amber-100 text-stone-600 hover:text-stone-800">
+            <%= log.date.day %>
+          </a>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

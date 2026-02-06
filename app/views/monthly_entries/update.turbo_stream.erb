@@ -1,0 +1,7 @@
+<%= turbo_stream.replace "monthly_entries_list" do %>
+  <div id="monthly_entries_list">
+    <% @entries.each do |entry| %>
+      <%= render "shared/monthly_entry", entry: entry, year: @year, month: @month %>
+    <% end %>
+  </div>
+<% end %>

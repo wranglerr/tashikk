@@ -1,0 +1,13 @@
+<%= turbo_stream.replace "entries_list" do %>
+  <div id="entries_list">
+    <% @entries.each do |entry| %>
+      <%= render "shared/entry", entry: entry, date: Date.parse(@date) %>
+    <% end %>
+  </div>
+<% end %>
+
+<%= turbo_stream.replace "entry_form" do %>
+  <div id="entry_form">
+    <%= render "shared/entry_form", date: @date %>
+  </div>
+<% end %>

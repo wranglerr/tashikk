@@ -1,0 +1,30 @@
+<div class="space-y-6">
+  <div class="flex items-center justify-between">
+    <a href="<%= daily_log_path(date: @prev_date) %>" class="text-stone-400 hover:text-stone-700 text-sm">&larr; <%= @prev_date.strftime("%b %-d") %></a>
+    <h1 class="text-xl font-bold text-stone-700">
+      <%= @date.strftime("%A, %B %-d, %Y") %>
+      <% if @date == Date.today %>
+        <span class="text-xs font-normal text-amber-600 ml-1">today</span>
+      <% end %>
+    </h1>
+    <% if @next_date <= Date.today %>
+      <a href="<%= daily_log_path(date: @next_date) %>" class="text-stone-400 hover:text-stone-700 text-sm"><%= @next_date.strftime("%b %-d") %> &rarr;</a>
+    <% else %>
+      <span class="text-sm text-stone-300">&nbsp;</span>
+    <% end %>
+  </div>
+
+  <div id="entries_list">
+    <% if @entries.any? %>
+      <% @entries.each do |entry| %>
+        <%= render "shared/entry", entry: entry, date: @date %>
+      <% end %>
+    <% else %>
+      <p class="text-stone-400 text-sm italic py-4">No entries yet. Start typing below.</p>
+    <% end %>
+  </div>
+
+  <div id="entry_form">
+    <%= render "shared/entry_form", date: @date %>
+  </div>
+</div>

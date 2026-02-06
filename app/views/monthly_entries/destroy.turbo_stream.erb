@@ -1,0 +1,11 @@
+<%= turbo_stream.replace "monthly_entries_list" do %>
+  <div id="monthly_entries_list">
+    <% if @entries.any? %>
+      <% @entries.each do |entry| %>
+        <%= render "shared/monthly_entry", entry: entry, year: @year, month: @month %>
+      <% end %>
+    <% else %>
+      <p class="text-stone-400 text-sm italic py-4">No monthly entries yet.</p>
+    <% end %>
+  </div>
+<% end %>

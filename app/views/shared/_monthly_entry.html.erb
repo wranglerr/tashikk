@@ -1,0 +1,27 @@
+<div class="group flex items-start gap-2 py-1.5 px-2 rounded hover:bg-amber-100/50" id="monthly_entry_<%= entry.line_index %>">
+  <% if entry.task? %>
+    <button data-controller="status-toggle"
+            data-status-toggle-url-value="<%= month_entry_path(year, month, entry.line_index) %>"
+            data-status-toggle-status-value="<%= entry.next_status %>"
+            data-action="click->status-toggle#toggle"
+            class="mt-0.5 w-5 h-5 flex-shrink-0 border border-stone-400 rounded-sm flex items-center justify-center text-xs cursor-pointer hover:border-stone-600 <%= 'bg-stone-200' if entry.done? || entry.canceled? %>">
+      <% if entry.done? %><span class="text-stone-600">x</span>
+      <% elsif entry.canceled? %><span class="text-stone-400">~</span>
+      <% elsif entry.migrated? %><span class="text-stone-400">&gt;</span>
+      <% end %>
+    </button>
+  <% elsif entry.event? %>
+    <span class="mt-0.5 w-5 h-5 flex-shrink-0 border border-stone-400 rounded-full flex items-center justify-center text-xs text-stone-500">o</span>
+  <% else %>
+    <span class="mt-0.5 w-5 h-5 flex-shrink-0 flex items-center justify-center text-stone-400">&bull;</span>
+  <% end %>
+
+  <span class="flex-1 leading-relaxed <%= 'line-through text-stone-400' if entry.done? || entry.canceled? %>"><%= entry.text %></span>
+
+  <button data-controller="delete-entry"
+          data-delete-entry-url-value="<%= month_entry_path(year, month, entry.line_index) %>"
+          data-action="click->delete-entry#delete"
+          class="opacity-0 group-hover:opacity-100 text-stone-400 hover:text-red-500 text-xs px-1 transition-opacity">
+    &times;
+  </button>
+</div>

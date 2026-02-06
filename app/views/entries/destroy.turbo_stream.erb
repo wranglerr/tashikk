@@ -1,0 +1,11 @@
+<%= turbo_stream.replace "entries_list" do %>
+  <div id="entries_list">
+    <% if @entries.any? %>
+      <% @entries.each do |entry| %>
+        <%= render "shared/entry", entry: entry, date: Date.parse(@date) %>
+      <% end %>
+    <% else %>
+      <p class="text-stone-400 text-sm italic py-4">No entries yet. Start typing below.</p>
+    <% end %>
+  </div>
+<% end %>
