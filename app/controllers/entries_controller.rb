@@ -4,7 +4,8 @@ class EntriesController < ApplicationController
   def create
     type = params[:entry_type] || "task"
     status = type == "task" ? :open : nil
-    entry = Entry.new(type: type, status: status, text: params[:text])
+    body = type == "snippet" ? params[:body] : nil
+    entry = Entry.new(type: type, status: status, text: params[:text], body: body)
     @daily_log.add_entry(entry)
 
     @entries = @daily_log.entries
@@ -20,6 +21,7 @@ class EntriesController < ApplicationController
     attrs[:status] = params[:status] if params[:status]
     attrs[:text] = params[:text] if params[:text]
     attrs[:type] = params[:type] if params[:type]
+    attrs[:body] = params[:body] if params.key?(:body)
     @daily_log.update_entry(line_index, attrs)
 
     @entries = @daily_log.entries

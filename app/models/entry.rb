@@ -1,5 +1,5 @@
 class Entry
-  TYPES = %i[task note event].freeze
+  TYPES = %i[task note event snippet].freeze
   STATUSES = %i[open done canceled migrated].freeze
 
   SIGNIFIERS = {
@@ -9,6 +9,7 @@ class Entry
     ["task", "migrated"]  => "- [>] ",
     ["note", nil]         => "- ",
     ["event", nil]        => "- [o] ",
+    ["snippet", nil]      => "- [s] ",
   }.freeze
 
   PARSE_PATTERNS = [
@@ -17,15 +18,17 @@ class Entry
     { pattern: /\A- \[>\] (.+)\z/, type: :task, status: :migrated },
     { pattern: /\A- \[ \] (.+)\z/, type: :task, status: :open },
     { pattern: /\A- \[o\] (.+)\z/, type: :event, status: nil },
+    { pattern: /\A- \[s\] (.+)\z/, type: :snippet, status: nil },
     { pattern: /\A- (.+)\z/,       type: :note, status: nil },
   ].freeze
 
-  attr_accessor :type, :status, :text, :line_index
+  attr_accessor :type, :status, :text, :body, :line_index
 
-  def initialize(type:, text:, status: nil, line_index: nil)
+  def initialize(type:, text:, status: nil, body: nil, line_index: nil)
     @type = type.to_sym
     @status = status&.to_sym
     @text = text
+    @body = body
     @line_index = line_index
   end
 
@@ -41,12 +44,17 @@ class Entry
   def to_markdown
     key = [type.to_s, status&.to_s]
     prefix = SIGNIFIERS[key] || "- "
-    "#{prefix}#{text}"
+    header = "#{prefix}#{text}"
+    return header unless snippet? && body.present?
+
+    body_lines = body.lines.map { |l| "    #{l.chomp}" }
+    [header, *body_lines].join("\n")
   end
 
   def task? = type == :task
   def note? = type == :note
   def event? = type == :event
+  def snippet? = type == :snippet
   def open? = status == :open
   def done? = status == :done
   def canceled? = status == :canceled
@@ -59,6 +67,7 @@ class Entry
     when [:task, :canceled] then "~"
     when [:task, :migrated] then ">"
     when [:event, nil]      then "o"
+    when [:snippet, nil]    then "s"
     else nil
     end
   end

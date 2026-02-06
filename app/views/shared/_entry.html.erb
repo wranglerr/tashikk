@@ -12,11 +12,18 @@
     </button>
   <% elsif entry.event? %>
     <span class="mt-0.5 w-5 h-5 flex-shrink-0 border border-stone-400 rounded-full flex items-center justify-center text-xs text-stone-500">o</span>
+  <% elsif entry.snippet? %>
+    <span class="mt-0.5 w-5 h-5 flex-shrink-0 border border-stone-400 rounded flex items-center justify-center text-xs text-stone-500">s</span>
   <% else %>
     <span class="mt-0.5 w-5 h-5 flex-shrink-0 flex items-center justify-center text-stone-400">&bull;</span>
   <% end %>
 
-  <span class="flex-1 leading-relaxed <%= 'line-through text-stone-400' if entry.done? || entry.canceled? %>"><%= entry.text %></span>
+  <div class="flex-1 min-w-0">
+    <span class="leading-relaxed <%= 'line-through text-stone-400' if entry.done? || entry.canceled? %>"><%= entry.text %></span>
+    <% if entry.snippet? && entry.body.present? %>
+      <pre class="mt-1 text-sm text-stone-600 bg-stone-50 rounded p-2 whitespace-pre-wrap font-sans"><%= entry.body %></pre>
+    <% end %>
+  </div>
 
   <% if entry.task? && entry.open? %>
     <button data-controller="migrate-entry"

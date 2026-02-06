@@ -1,15 +1,24 @@
 <%= form_with url: monthly_entries_path(year: year, month: month), method: :post,
   data: { controller: "rapid-entry", action: "turbo:submit-end->rapid-entry#refocus" },
-  class: "flex items-center gap-2 border border-stone-300 rounded-lg px-3 py-2 bg-white shadow-sm focus-within:border-stone-500 focus-within:ring-1 focus-within:ring-stone-500" do |f| %>
+  class: "border border-stone-300 rounded-lg px-3 py-2 bg-white shadow-sm focus-within:border-stone-500 focus-within:ring-1 focus-within:ring-stone-500" do |f| %>
 
-  <select name="entry_type" class="bg-transparent text-xs text-stone-500 border-none focus:ring-0 p-0 pr-6 cursor-pointer" data-rapid-entry-target="typeSelect">
-    <option value="task">task</option>
-    <option value="note">note</option>
-    <option value="event">event</option>
-  </select>
+  <div class="flex items-center gap-2">
+    <select name="entry_type" class="bg-transparent text-xs text-stone-500 border-none focus:ring-0 p-0 pr-6 cursor-pointer" data-rapid-entry-target="typeSelect" data-action="change->rapid-entry#typeChanged">
+      <option value="task">task</option>
+      <option value="note">note</option>
+      <option value="event">event</option>
+      <option value="snippet">snippet</option>
+    </select>
 
-  <input type="text" name="text" placeholder="Add to monthly log..."
-    autocomplete="off"
-    data-rapid-entry-target="input"
-    class="flex-1 bg-transparent border-none focus:ring-0 text-stone-800 placeholder-stone-400 p-0" />
+    <input type="text" name="text" placeholder="Add to monthly log..."
+      autocomplete="off"
+      data-rapid-entry-target="input"
+      class="flex-1 bg-transparent border-none focus:ring-0 text-stone-800 placeholder-stone-400 p-0" />
+  </div>
+
+  <div data-rapid-entry-target="bodyWrapper" class="hidden mt-2">
+    <textarea name="body" rows="3" placeholder="Snippet body..."
+      data-rapid-entry-target="bodyInput"
+      class="w-full bg-stone-50 border border-stone-200 rounded text-sm text-stone-700 placeholder-stone-400 p-2 focus:ring-1 focus:ring-stone-500 focus:border-stone-500"></textarea>
+  </div>
 <% end %>

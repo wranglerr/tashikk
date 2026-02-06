@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["input", "typeSelect"]
+  static targets = ["input", "typeSelect", "bodyWrapper", "bodyInput"]
 
   refocus() {
     requestAnimationFrame(() => {
@@ -10,6 +10,16 @@ export default class extends Controller {
         input.value = ""
         input.focus()
       }
+      if (this.hasBodyInputTarget) {
+        this.bodyInputTarget.value = ""
+      }
     })
+  }
+
+  typeChanged() {
+    if (!this.hasBodyWrapperTarget) return
+
+    const isSnippet = this.typeSelectTarget.value === "snippet"
+    this.bodyWrapperTarget.classList.toggle("hidden", !isSnippet)
   }
 }
